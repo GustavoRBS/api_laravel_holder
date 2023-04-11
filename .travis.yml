@@ -1,0 +1,22 @@
+dist: trusty
+
+language: php
+
+sudo: required
+
+services:
+  - mysql
+
+php:
+  - 8.0
+
+before_script:
+  - cp .env.travis .env
+  - mysql -e 'CREATE DATABASE homestead_test;'
+  - composer self-update
+  - composer install --no-interaction
+  - php artisan key:generate
+  - php artisan migrate --seed
+
+script:
+  - vendor/bin/phpunit
